@@ -80,7 +80,7 @@ DiscordAPI api = new DiscordAPI(access_token: String);
 The following API fetch calls will throw `IOException (HttpStatusException)` when access is denied due to invalid scope or expired token.
 
 #### Fetching User
-Scope `identity` is required.
+Scope `identify` is required.
 Scope `email` is required for `email` and `verified` values.
 ```java
 import io.mokulu.discord.oauth.model.User;
