@@ -1,4 +1,4 @@
-package io.mokulu.discord.oauth.model;
+package xyz.rugman27.discord.oauth.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package io.mokulu.discord.oauth.model;
+package xyz.rugman27.discord.oauth.model;
 
 import java.util.LinkedList;
 import java.util.List;

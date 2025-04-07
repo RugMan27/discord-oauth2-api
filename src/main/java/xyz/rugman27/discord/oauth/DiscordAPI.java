@@ -1,18 +1,19 @@
-package io.mokulu.discord.oauth;
+package xyz.rugman27.discord.oauth;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import io.mokulu.discord.oauth.model.Connection;
-import io.mokulu.discord.oauth.model.Guild;
-import io.mokulu.discord.oauth.model.User;
+import xyz.rugman27.discord.oauth.model.Connection;
+import xyz.rugman27.discord.oauth.model.Guild;
+import xyz.rugman27.discord.oauth.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,11 +48,11 @@ public class DiscordAPI
      * @param request Request
      * @throws IOException Properties exception from getVersion()
      */
-    private void setHeaders(org.jsoup.Connection request) throws IOException
+    private void setHeaders(@org.jetbrains.annotations.NotNull org.jsoup.Connection request) throws IOException
     {
         request.header("Authorization", "Bearer " + accessToken);
         request.header("User-Agent",
-            String.format("Mokulu-Discord-OAuth2-Java, version %s, platform %s %s", getVersion(), System.getProperty("os.name"),
+            String.format("Fork of Mokulu-Discord-OAuth2-Java By Rugman27, version %s, platform %s %s", getVersion(), System.getProperty("os.name"),
                 System.getProperty("os.version")));
     }
 
@@ -61,7 +62,7 @@ public class DiscordAPI
      * @return Response
      * @throws IOException Jsoup or Version exception
      */
-    private String handleGet(String path) throws IOException
+    private @NotNull String handleGet(String path) throws IOException
     {
         org.jsoup.Connection request = Jsoup.connect(BASE_URI + path).ignoreContentType(true);
         setHeaders(request);

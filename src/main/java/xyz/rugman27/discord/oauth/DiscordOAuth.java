@@ -1,6 +1,6 @@
-package io.mokulu.discord.oauth;
+package xyz.rugman27.discord.oauth;
 
-import static io.mokulu.discord.oauth.DiscordAPI.BASE_URI;
+import static xyz.rugman27.discord.oauth.DiscordAPI.BASE_URI;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -12,7 +12,7 @@ import org.jsoup.Jsoup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import io.mokulu.discord.oauth.model.TokensResponse;
+import xyz.rugman27.discord.oauth.model.AuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,15 +28,6 @@ public class DiscordOAuth
     private final String redirectUri;
     private final String[] scope;
 
-    /**
-     * Converts a JSON string to a TokensResponse object.
-     * @param str The JSON string.
-     * @return The TokensResponse object.
-     */
-    private static TokensResponse toObject(String str)
-    {
-        return gson.fromJson(str, TokensResponse.class);
-    }
 
     /**
      * Generates a Discord OAuth2 authorization URL.
@@ -82,7 +73,7 @@ public class DiscordOAuth
      * @return The tokens.
      * @throws IOException Jsoup exception.
      */
-    public TokensResponse getTokens(String code) throws IOException
+    public AuthenticationToken getToken(String code) throws IOException
     {
         Connection request = Jsoup.connect(BASE_URI + "/oauth2/token")
             .data("client_id", clientID)
@@ -95,7 +86,10 @@ public class DiscordOAuth
 
         String response = request.post().body().text();
 
-        return toObject(response);
+        AuthenticationToken token = AuthenticationToken.fromJson(response);
+        token.setDiscordOAuth(this);
+
+        return token;
     }
 
     /**
@@ -104,7 +98,7 @@ public class DiscordOAuth
      * @return The new tokens.
      * @throws IOException Jsoup exception.
      */
-    public TokensResponse refreshTokens(String refreshToken) throws IOException
+    public AuthenticationToken refreshToken(String refreshToken) throws IOException
     {
         Connection request = Jsoup.connect(BASE_URI + "/oauth2/token")
             .data("client_id", clientID)
@@ -115,6 +109,9 @@ public class DiscordOAuth
 
         String response = request.post().body().text();
 
-        return toObject(response);
+        AuthenticationToken token = AuthenticationToken.fromJson(response);
+        token.setDiscordOAuth(this);
+
+        return token;
     }
 }
